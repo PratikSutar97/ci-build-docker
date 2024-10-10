@@ -1,0 +1,5 @@
+streamlit
+numpy
+plotly
+boto3
+s3fs
