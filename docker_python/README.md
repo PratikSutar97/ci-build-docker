@@ -11,6 +11,8 @@
     - [CodeBuild Image Creation Build Pipeline Assignment](#codebuild-image-creation-build-pipeline-assignment)
     - [Image Creation Continuous Integration Pipeline Assignment](#image-creation-continuous-integration-pipeline-assignment)
 
+---
+
 # Docker Image Creation Pipeline
 - This Project will create Docker Images and push the Docker Images to Amazon ECR repository. This will enable Continuos Integration Pipeline for Docker Images creation using CodeBuild Job.
 
@@ -19,6 +21,8 @@
 - Place both the Python Application and requirements files in a folder and name it `src/`
 - This project requires Python libraries to be installed for it to run.
 - The libraries will be recorded in a `requirements.txt` file. This file will be used during docker build process.
+
+--
 
 ### Docker Setup
 - The **Dockerfile** required for this project mainly has to achieve the following logical steps:
@@ -31,7 +35,7 @@
 - Copy the Docker commands below in `Dockerfile`
 
 ```Dockerfile
-FROM python:3.8
+FROM python:3.8-slim
 ENV MICRO_SERVICE=/home/app/webapp
 
 # set work directory
@@ -53,6 +57,8 @@ EXPOSE 8501
 CMD streamlit run app.py
 ```
 
+--
+
 ### Running the Project Locally
 - With both files set up, you are ready to build and run your image. To build your image, run the command
 
@@ -66,14 +72,39 @@ docker run -d -p 8888:8501 python_web_app
 ```
 - The app is now running at the IP Address and can be accessed on Browser with <IP>:8501.
 
+--
+
 ## Configuration of Docker Image Creation Build Job
+
+```mermaid
+flowchart TD
+    A[CodeCommit] -->|git pull | B(CodeBuild Compute)
+    B(CodeBuild Compute) -->| | C(Download Source Code)
+    C(Download Source Code) -->| | D(Execute buildspec.yml commands)
+    D(Execute buildspec.yml commands) -->| | E(Execute build_and_push.sh)
+    E(Execute build_and_push.sh) -->| web_app:1.0 | F(docker build, tag, login, push)
+    F(docker build, tag, login, push) -->|web_app:1.0 | G(ECR Repo)
+    subgraph CodeBuild
+    B
+    C
+    D
+    E
+    F
+    end
+    subgraph ECR
+    G
+    end
+```
+
+--
+
 ### Pre-Requisites
 - Create a codecommit repository and upload the files using git bash and other git commands like `git add, git commit and git push`
 - Create a Codebuild Project from AWS Console with below information:
     - For Operating system, choose Ubuntu.
     - For Runtime, choose Standard.
-    - For Image, choose `aws/codebuild/standard:5.0`.
-    - Since we have to use this build project to build a Docker image, select `Privileged` checkbox.
+    - For Image, choose `aws/codebuild/standard:7.0`.
+    - Since we have to use this build project to build a Docker image, select **Privileged** checkbox.
 
 >Privileged :Enable this flag if you want to build Docker images or want your builds to get elevated privileges.
 
@@ -81,6 +112,8 @@ docker run -d -p 8888:8501 python_web_app
   - `DOCKER_IMAGE_NAME`
 
 >Values for this environment variables will be passed during execution of CodeBuild Job
+
+--
 
 - Add below inline policy to Codebuild Project Role.
 
@@ -104,11 +137,15 @@ docker run -d -p 8888:8501 python_web_app
 }
 ```
 
+--
+
 ### Executing CodeBuild Job
-- Navigate to above created CodeBuild Job and click on `Start Build with overrides`
-- Specify the branch name and provide values for environment variables : `DOCKER_IMAGE_NAME`
+- Navigate to above created CodeBuild Job and click on **Start Build with overrides**
+- Specify the branch name and provide values for environment variables : **DOCKER_IMAGE_NAME**
 - Validate the CodeBuild Execution Logs for Docker Image Creation and if docker image created inside the CodeBuild Container is available in ECR Repository.
 - Every Image inside a ECR Repo contains a Image URI similar to this : `ACCOUNT_ID.dkr.ecr.REGION_NAME.amazonaws.com/python_webapp-ecr-repo:python_webapp-5`
+
+--
 
 ### Repository structure
  - `docker_python` - contains `buildspec.yml` file that will be used by CodeBuild Project
