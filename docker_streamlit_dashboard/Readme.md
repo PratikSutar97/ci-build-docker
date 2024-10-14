@@ -64,7 +64,7 @@ docker run -d -p 8888:8501 python_web_app
 
 ## Configuration of Docker Image Creation Build Job
 ### Pre-requisites
-- Create a codecommit repository and upload the files using git bash and other git commands like `git add, git commit and git push`
+- Create a Github repository and upload the files using git bash and other git commands like `git add, git commit and git push`
 - Create a Codebuild Project from AWS Console with below information:
     - For Operating system, choose Ubuntu.
     - For Runtime, choose Standard.

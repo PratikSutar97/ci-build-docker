@@ -78,7 +78,7 @@ docker run -d -p 8888:8501 python_web_app
 
 ```mermaid
 flowchart TD
-    A[CodeCommit] -->|git pull | B(CodeBuild Compute)
+    A[Github] -->|git pull | B(CodeBuild Compute)
     B(CodeBuild Compute) -->| | C(Download Source Code)
     C(Download Source Code) -->| | D(Execute buildspec.yml commands)
     D(Execute buildspec.yml commands) -->| | E(Execute build_and_push.sh)
@@ -99,7 +99,7 @@ flowchart TD
 --
 
 ### Pre-Requisites
-- Create a codecommit repository and upload the files using git bash and other git commands like `git add, git commit and git push`
+- Create a Github repository and upload the files using git bash and other git commands like `git add, git commit and git push`
 - Create a Codebuild Project from AWS Console with below information:
     - For Operating system, choose Ubuntu.
     - For Runtime, choose Standard.

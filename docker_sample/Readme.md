@@ -4,7 +4,7 @@ This Project will create Docker Images and push the Docker Images to Amazon ECR 
 ### Pre-requisites
 - Create two SSM Parameters and store the https Git Credentials for an IAM user.
 - This will be used in CodeBuild Project e.g (git-username and git-password)
-- Create a codecommit repository and upload the files using git bash and other git commands like git add, git commit and git
+- Create a Github repository and upload the files using git bash and other git commands like git add, git commit and git
 - Create a Codebuild Project from AWS Console with below information:
     - For Operating system, choose Ubuntu.
     - For Runtime, choose Standard.
@@ -40,7 +40,7 @@ This Project will create Docker Images and push the Docker Images to Amazon ECR 
 }
 ```
 
-- Create a CodePipeline with Source Stage as CodeCommit and Build Stage as CodeBuild, while creating the CodePipeline, a Cloudwatch event will be created , where any change to the master branch will trigger the Pipeline.
+- Create a CodePipeline with Source Stage as Github and Build Stage as CodeBuild, while creating the CodePipeline, a Cloudwatch event will be created , where any change to the master branch will trigger the Pipeline.
 
 #### Repository structure
 ----------------------------
