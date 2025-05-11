@@ -1,5 +1,6 @@
 streamlit
 numpy
 plotly
+plotly_express
 boto3
 s3fs
