@@ -46,7 +46,14 @@ echo "fullname is $fullname"
 # Build the docker image locally with the image name and then push it to ECR with the full name.
 
 docker build -t ${image_name} $CODEBUILD_SRC_DIR/docker_python/
-echo "Docker build after"
+
+# Check the exit status of the docker build command
+if [ $? -ne 0 ]; then
+  echo "❌ Docker build failed with exit code $?. Exiting."
+  exit 1
+else
+  echo "✅ Docker build succeeded."
+fi
 
 echo "image_name is $image_name"
 echo "Tagging of Docker Image in Progress"
