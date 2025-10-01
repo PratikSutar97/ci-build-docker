@@ -5,10 +5,10 @@ import numpy as np
 
 st.set_page_config(page_title="Financial Planning Calculator")
 
-st.title("Financial Planning Calculator-May-2025")
+st.title("Financial Planning Calculator-March-2025")
 
-st.header("**Monthly Income-May-2025**")
-st.subheader("Salary-May-2025")
+st.header("**Monthly Income-March-2025**")
+st.subheader("Salary-March-2025")
 colAnnualSal, colTax = st.columns(2)
 
 with colAnnualSal:
